@@ -10,8 +10,8 @@ import {
   GET_MUNICIPALITIES,
 } from './constants';
 
-export function* loadMunicipalities() {
-  const requestURL = `/municipalities`;
+export function* loadMunicipalities(action) {
+  const requestURL = `/governments/${action.gov}/municipalities/${action.mun}`;
   const options = {
     method: 'GET',
     headers: {
