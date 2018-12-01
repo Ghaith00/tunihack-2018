@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import './Tunis.css'
-import mapData from './mapData';
+import './style.css'
+import mapData from './data';
 
 // must have handleSelection function as props
 class TunisiaMap extends Component {
