@@ -1,25 +1,38 @@
-/*
- * HomePage
- *
- * This is the first thing users see of our App, at the '/' route
- *
- * NOTE: while this component should technically be a stateless functional
- * component (SFC), hot reloading does not currently support SFCs. If hot
- * reloading is not a necessity for you then you can refactor it and remove
- * the linting exception.
- */
-
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import injectSaga from '../../utils/injectSaga';
+import { DAEMON } from '../../utils/constants';
+import saga from './saga';
 
 /* eslint-disable react/prefer-stateless-function */
-export default class HomePage extends React.PureComponent {
+class HomePage extends React.Component {
   render() {
     return (
-      <h1>
-        <FormattedMessage {...messages.header} />
-      </h1>
+      <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+        container
+      </div>
     );
   }
 }
+function mapDispatchToProps(dispatch) { // eslint-disable-line
+  return {};
+}
+
+const mapStateToProps = createStructuredSelector({});
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+
+const withSaga = injectSaga({
+  key: 'global',
+  saga,
+  mode: DAEMON,
+});
+export default compose(
+  withSaga,
+  withConnect,
+)(HomePage);
