@@ -11,7 +11,7 @@ import {
 } from './constants';
 
 export function* loadMunicipalities(action) {
-  const requestURL = `/governments/${action.gov}/municipalities/${action.mun}`;
+  const requestURL = `/governments/${action.gov}`;
   const options = {
     method: 'GET',
     headers: {

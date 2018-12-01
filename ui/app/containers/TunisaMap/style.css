@@ -1,8 +1,8 @@
 .selected {
-    fill: rgb(255, 0, 0);
+    fill: #e67e22;
 }
 
 path.not-selected:hover {
-    fill: rgb(97, 97, 211);
+    fill: #1abc9c;
     cursor: pointer;
 }
