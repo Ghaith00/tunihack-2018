@@ -13,6 +13,6 @@
   "license": "ISC",
   "dependencies": {
     "keccak256": "^1.0.0",
-    "web3": "^1.0.0-beta.36"
+    "web3": "^0.20.6"
   }
 }

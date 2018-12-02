@@ -10,6 +10,7 @@ const indexRouter = require('./routes/index');
 const metadataRouter = require('./routes/metadata');
 const governorateRouter = require('./routes/governorate');
 const projectRouter = require('./routes/project');
+const validationRouter = require('./routes/validation');
 const app = express();
 
 app.use(logger('dev'));
@@ -22,6 +23,7 @@ app.use('/', indexRouter);
 app.use('/metadata', metadataRouter);
 app.use('/governorates', governorateRouter);
 app.use('/projects', projectRouter);
+app.use('/validation', validationRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -36,6 +38,7 @@ app.use(function(err, req, res, next) {
 
   // return error
   res.status(err.status || 500);
+  console.log(err)
   res.json({error: err})
 });
 
