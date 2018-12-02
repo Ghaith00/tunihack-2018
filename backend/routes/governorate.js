@@ -7,28 +7,24 @@ const data = require(path.join(__dirname, '../../db/_sample-data'))
 
 // GET municipality by governorate by name
 router.get('/:g_name/municipalities/:m_name', function(req, res, next) {
-  console.log('/:g_name/municipalities/:m_name')
-  let data = getMunicipalitiesByGovernorateByName(req.params.g_name, req.params.m_name)
+  let data = getMunicipalitiesByGovernorateByName(decodeURIComponent(req.params.g_name), decodeURIComponent(req.params.m_name))
   res.json(data)
 });
 
 // GET municipalities by governorate
 router.get('/:g_name/municipalities', function(req, res, next) {
-  console.log('/:g_name/municipalities')  
-  let data = getMunicipalitiesByGovernorate(req.params.g_name)
+  let data = getMunicipalitiesByGovernorate(decodeURIComponent(req.params.g_name))
   res.json(data)
 });
 
 // GET governorate by name
 router.get('/:g_name', function(req, res, next) {
-  console.log('/:g_name')  
-  let data = getGovernorateByName(req.params.g_name)
+  let data = getGovernorateByName(decodeURIComponent(req.params.g_name))
   res.json(data)
 });
 
 // GET all governorates
 router.get('/', function(req, res, next) {
-  console.log('/')
   res.json(data);
 });
 
@@ -48,7 +44,7 @@ function getMunicipalitiesByGovernorate(g_name) {
 }
 
 function getGovernorateByName(g_name) {
-  for (let elt of data) {  
+  for (let elt of data) {
     if (elt.name === g_name) {
       return elt
     }
