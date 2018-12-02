@@ -5,7 +5,7 @@ const path = require('path');
 const data = require(path.join(__dirname, '../../db/_sample-data'))
 
 
-// GET municipalitiy by governorate by name
+// GET municipality by governorate by name
 router.get('/:g_name/municipalities/:m_name', function(req, res, next) {
   console.log('/:g_name/municipalities/:m_name')
   let data = getMunicipalitiesByGovernorateByName(req.params.g_name, req.params.m_name)
