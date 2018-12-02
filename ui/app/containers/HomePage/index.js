@@ -31,6 +31,7 @@ import {
   makeSelectBudgets,
   makeSelectProjects,
 } from '../App/selectors';
+import FileChecker from './FileChecker';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
@@ -159,7 +160,14 @@ class HomePage extends React.Component {
             <Spin indicator={antIcon} />
           )}
         <br />
-        <Card />
+        <Row type="flex" gutter={32}>
+          <Col span={19} />
+          <Col span={5}>
+            <Card>
+              <FileChecker metadata={this.props.metadata} />
+            </Card>
+          </Col>
+        </Row>
         <br />
         <Skeleton active loading={this.props.metadata.govData.length === 0}>
           <Row type="flex" gutter={32}>
@@ -201,7 +209,7 @@ class HomePage extends React.Component {
                     <h2 style={{ textAlign: 'center' }}>جدول مفصل </h2>
                     <Divider />
                     <Table
-                      dataSource={this.props.projects }
+                      dataSource={this.props.projects}
                       columns={projectsColumns}
                     />
                   </TabPane>
@@ -215,24 +223,23 @@ class HomePage extends React.Component {
             <Col span={5}>
               <Card loading={!this.props.metadata}>
                 <span>
-                  Gouvernerat:{' '}
                   <Select
                     className="big-select"
                     defaultValue={this.props.metadata.govData[0]}
                     value={this.state.selected}
-                    style={{ width: 120 }}
+                    style={{ width: 180 }}
                     onChange={this.handleGovChange}
                   >
                     {this.props.metadata.govData.map(province => (
                       <Option key={province}>{province}</Option>
                     ))}
                   </Select>
+                  : الولاية{' '}
                 </span>
                 <Divider />
                 <span>
-                  Municipalité:{' '}
                   <Select
-                    style={{ width: 120 }}
+                    style={{ width: 180 }}
                     value={this.state.secondCity}
                     onChange={this.handleMunChange}
                   >
@@ -240,6 +247,7 @@ class HomePage extends React.Component {
                       <Option key={city}>{city}</Option>
                     ))}
                   </Select>
+                  : البلدية{' '}
                 </span>
                 <Divider type="horizontal">
                   <h2>أو</h2>

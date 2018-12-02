@@ -22,7 +22,6 @@ class FileChecker extends Component {
     }
 
     // For more informations
-    // https://stackoverflow.com/questions/38049966/get-image-preview-before-uploading-in-react
     uploadImage(event){
         // Assuming only image
         let file = event.target.files[0];
@@ -31,7 +30,7 @@ class FileChecker extends Component {
 
         reader.onloadend = function(e){
             this.setState({
-                file: [reader.result][0],
+                file: [reader.result][0].split(',')[1],
                 fileName: file.name,
             })
             
@@ -42,7 +41,7 @@ class FileChecker extends Component {
         this.setState({
             selected: value,
             cities: this.props.metadata.municipalityData[value],
-            secondCity: undefined, // this.props.metadata.municipalityData[value][0],
+            secondCity: undefined, 
         });
     };
 
@@ -60,11 +59,10 @@ class FileChecker extends Component {
 
     async handleConfirm(){
         try {
-            const res = await axios.get('http://0c03dbef.ngrok.io/validation', {
+            const res = await axios.get('/validation', {
                 params:{
                     hash: keccak256(this.state.file).toString('hex'),
-                    year: this.state.year,
-                    municipality: this.state.secondCity,
+                    municipality: this.state.selected,
                 },
             });
             this.setState({confirmed : res.data.response, sended: true})
@@ -77,20 +75,8 @@ class FileChecker extends Component {
     render() {
         return (
             <div>
-                <h2>التثبت من الميزانية</h2>
+                <h2>التثبت من مصداقية المعطيات</h2>
 
-                <div>
-                    <Select
-                        style={{ width: 200 }}
-                        defaultValue={'2017'}
-                        onChange={this.handleYearChange}
-                        >
-                        {['2017', '2016', '2015', '2014', '2013'].map(year => (
-                            <Option key={year}>{year}</Option>
-                            ))}
-                    </Select>
-                    {' '}  السنة  {' '}
-                </div>   
                 <br/>
                 <div>
                     <Select
@@ -103,9 +89,6 @@ class FileChecker extends Component {
                             ))}
                     </Select>
                     {' '}  الولاية {' '}
-                </div> 
-                <br/>        
-                <div>
                     <Select
                         style={{ width: 200 }}
                         value={this.state.secondCity}
@@ -118,9 +101,9 @@ class FileChecker extends Component {
                     {' '} البلدية  {' '}
                 </div>
 
-                <br/>                
+                
 
-                <input type='file' label='Upload' accept='.*'
+                <input type='file' label='Upload' 
                     ref={ (ref) => { this.fileChangedHandler = ref }}
                     style={{ display: 'none'}}
                     onChange={this.uploadImage.bind(this)}
@@ -142,7 +125,7 @@ class FileChecker extends Component {
                 
                 {
                     this.state.error ?                    
-                        <div style={{color: 'red'}}>{'هناك عطل في الخادم'}</div>:''
+                        <div style={{color: 'red'}}>{'الملف لا يطابق المعطيات المسجلة'}</div>:''
                 }
                 {
                     this.state.sended?
