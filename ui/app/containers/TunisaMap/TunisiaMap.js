@@ -18,18 +18,34 @@ class TunisiaMap extends Component {
     };
   }
 
-  handleClick(e) {
-    e.preventDefault();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selected && nextProps.selected !== this.props.selected) {
+      this.setState({
+        selected: nextProps.selected,
+        governances: this.state.governances.map(gov => {
+          return {
+            ...gov,
+            selected: nextProps.selected === gov.name ? true : false,
+          };
+        }),
+      });
+    }
+  }
+
+  handleClick = name => {
+    // e.preventDefault();
     this.setState({
+      selected: name,
       governances: this.state.governances.map(gov => {
         return {
           ...gov,
-          selected: e.target.id === gov.id ? true : false,
+          selected: name === gov.name ? true : false,
         };
       }),
     });
-    this.props.handleSelection(e.target.id);
-  }
+    console.log(name);
+    this.props.handleSelection(name);
+  };
 
   render() {
     return (
@@ -55,7 +71,7 @@ class TunisiaMap extends Component {
               id={governance.id}
               name={governance.name}
               key={governance.id}
-              onClick={this.handleClick.bind(this)}
+              onClick={() => this.handleClick(governance.name)}
             />
           ))}
 

@@ -11,11 +11,7 @@ import TunisiaMap from '../TunisaMap/TunisiaMap';
 import { makeSelectMetadata } from '../App/selectors';
 
 const { Option } = Select;
-// const this.props.metadata.govData = ['Zhejiang', 'Jiangsu'];
-// const municipalityData = {
-//   Zhejiang: ['Hangzhou', 'Ningbo', 'Wenzhou'],
-//   Jiangsu: ['Nanjing', 'Suzhou', 'Zhenjiang'],
-// };
+
 /* eslint-disable react/prefer-stateless-function */
 class HomePage extends React.Component {
   constructor(props) {
@@ -28,8 +24,14 @@ class HomePage extends React.Component {
     // props.laodMunicipality(1, 1);
   }
 
+  handleGovSelectionFromMap = value => {
+    console.log(value);
+    this.handleGovChange(value);
+  };
+
   handleGovChange = value => {
     this.setState({
+      selected: value,
       cities: this.props.metadata.municipalityData[value],
       secondCity: undefined, // this.props.metadata.municipalityData[value][0],
     });
@@ -43,7 +45,6 @@ class HomePage extends React.Component {
 
   render() {
     // const { cities } = this.state;
-    console.log(this.props.metadata);
     return (
       <Fragment>
         <Card />
@@ -57,6 +58,7 @@ class HomePage extends React.Component {
                 <Select
                   className="big-select"
                   defaultValue={this.props.metadata.govData[0]}
+                  value={this.state.selected}
                   style={{ width: 120 }}
                   onChange={this.handleGovChange}
                 >
@@ -82,7 +84,10 @@ class HomePage extends React.Component {
                 <h2>أو</h2>
               </Divider>
 
-              <TunisiaMap />
+              <TunisiaMap
+                selected={this.state.selected}
+                handleSelection={this.handleGovSelectionFromMap}
+              />
             </Card>
           </Col>
         </Row>
