@@ -8,3 +8,4 @@ Routes of the backend server
     GET '/governorates/:g_name      => governorate by name
     GET '/governorates/:g_name/municipalities           => municipalities by governorate
     GET '/governorates/:g_name/municipalities/:m_name'  => municipality by governorate by name
+    GET '/projects/governorates/:g_name/municipalities/:m_name'  => municipality projects by governorate by name
