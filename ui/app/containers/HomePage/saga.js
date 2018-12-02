@@ -10,10 +10,14 @@ import {
   GET_MUNICIPALITIES,
   GET_MAIN_PAGE,
   LOAD_METADATA,
+  LOAD_PROJECTS,
 } from './constants';
 
 export function* loadMunicipalities(action) {
   const requestURL = `/governorates/${action.gov}/municipalities/${action.mun}`;
+  const projectsURL = `/projects/governorates/${action.gov}/municipalities/${
+    action.mun
+  }`;
   const options = {
     method: 'GET',
     headers: {
@@ -23,6 +27,8 @@ export function* loadMunicipalities(action) {
   try {
     const accounts = yield call(request, requestURL, options);
     yield put({ type: LOAD_MUNICIPALITIES, payload: accounts });
+    const projects = yield call(request, projectsURL, options);
+    yield put({ type: LOAD_PROJECTS, payload: projects });
   } catch (err) {
     yield put({ type: ERROR_LOADING_DATA });
   }

@@ -136,19 +136,8 @@ const makeSelectBudgetYears = () =>
         : [],
   );
 
-// const makeSelectBudgets = () =>
-//   createSelector(
-//     selectGlobal,
-//     state =>
-//       state.get('selectedMun')
-//         ? Object.keys(state.get('selectedMun')).filter(
-//             item =>
-//               item !== 'name' &&
-//               (Object.keys(state.get('selectedMun')[item].income).length ||
-//                 Object.keys(state.get('selectedMun')[item].outcome).length),
-//           )
-//         : [],
-//   );
+const makeSelectProjects = () =>
+  createSelector(selectGlobal, state => state.get('projects') || []);
 const makeSelectLocation = () =>
   createSelector(selectRouter, routerState =>
     routerState.get('location').toJS(),
@@ -160,4 +149,5 @@ export {
   makeSelectBuget,
   makeSelectMetadata,
   makeSelectBudgets,
+  makeSelectProjects,
 };
