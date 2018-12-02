@@ -13,7 +13,7 @@ import {
 } from './constants';
 
 export function* loadMunicipalities(action) {
-  const requestURL = `/governments/${action.gov}`;
+  const requestURL = `/governorates/${action.gov}/municipalities/${action.mun}`;
   const options = {
     method: 'GET',
     headers: {
