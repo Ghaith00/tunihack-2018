@@ -69,6 +69,7 @@
     "fontfaceobserver": "2.0.13",
     "history": "4.7.2",
     "hoist-non-react-statics": "3.0.1",
+    "http-proxy-middleware": "^0.19.0",
     "immutable": "3.8.2",
     "intl": "1.2.5",
     "invariant": "2.2.4",
@@ -84,12 +85,12 @@
     "react-redux": "5.0.7",
     "react-router-dom": "4.3.1",
     "redux": "4.0.1",
-    "http-proxy-middleware": "^0.19.0",
     "redux-immutable": "4.0.0",
     "redux-saga": "0.16.2",
     "reselect": "4.0.0",
     "sanitize.css": "4.1.0",
     "styled-components": "4.0.2",
+    "uuid": "^3.3.2",
     "warning": "4.0.2"
   },
   "devDependencies": {

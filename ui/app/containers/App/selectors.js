@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { Map } from 'immutable';
 import { initialState } from './reducer';
+import uuid from 'uuid';
 export const embeddMunicipalities = item => {
   const rObj = {};
   rObj[item.name] = [...item.children];
@@ -29,11 +30,9 @@ const makeSelectMetadata = () =>
     };
   });
 function formatBudget(budget, budgetItemName, municipalityName) {
-  console.log(municipalityName);
-
   const rObj = {};
   // rObj[item.name] = [...item.children];
-  rObj.key = municipalityName + budgetItemName;
+  rObj.key = uuid.v1();
   if (budget.total !== undefined) {
     rObj.total = budget.total;
   } else if (typeof budget === 'string') {
@@ -56,8 +55,12 @@ function formatBudget(budget, budgetItemName, municipalityName) {
   }
   return rObj;
 }
-const makeSelectBuget = year =>
+const makeSelectBuget = () =>
   createSelector(selectGlobal, globalState => {
+    const year = globalState.get('budgetYear');
+    if (year === undefined) {
+      return null;
+    }
     const budgetOfYear = globalState.get('selectedMun')
       ? globalState.get('selectedMun')[year]
       : null;
@@ -67,12 +70,17 @@ const makeSelectBuget = year =>
     if (budgetOfYear !== null) {
       const formattedBudget = [];
       const outcome = budgetOfYear.outcome
-        ? formatBudget(budgetOfYear.outcome, 'outcome', municipalityName)
+        ? formatBudget(budgetOfYear.outcome, 'النفقات', municipalityName)
         : null;
       const income = budgetOfYear.income
-        ? formatBudget(budgetOfYear.outcome, 'income', municipalityName)
+        ? formatBudget(budgetOfYear.income, 'المداخيل', municipalityName)
         : null;
-
+      outcome.total = outcome.children
+        ? outcome.children.map(kid => Number(kid.total)).reduce((x, y) => x + y)
+        : '';
+      income.total = income.children
+        ? income.children.map(kid => Number(kid.total)).reduce((x, y) => x + y)
+        : '';
       formattedBudget.push(outcome);
       formattedBudget.push(income);
 
@@ -80,9 +88,76 @@ const makeSelectBuget = year =>
     }
     return null;
   });
+const makeSelectBudgets = () =>
+  createSelector(selectGlobal, globalState => {
+    const municipalityName = globalState.get('selectedMun')
+      ? globalState.get('selectedMun').name
+      : null;
+    if (!globalState.get('selectedMun')) return null;
+    return Object.keys(globalState.get('selectedMun'))
+      .filter(item => item !== 'name')
+      .map(key => {
+        const budget = globalState.get('selectedMun')[key];
+        const formattedBudget = [];
+        const outcome = budget.outcome
+          ? formatBudget(budget.outcome, 'النفقات', municipalityName)
+          : null;
+        const income = budget.income
+          ? formatBudget(budget.income, 'المداخيل', municipalityName)
+          : null;
+        outcome.total = outcome.children
+          ? outcome.children
+              .map(kid => Number(kid.total))
+              .reduce((x, y) => x + y)
+          : '';
+        income.total = income.children
+          ? income.children
+              .map(kid => Number(kid.total))
+              .reduce((x, y) => x + y)
+          : '';
+        formattedBudget.push(outcome);
+        formattedBudget.push(income);
+        const rObj = {};
+        rObj[key] = formattedBudget;
+        return rObj;
+      });
+  });
+const makeSelectBudgetYears = () =>
+  createSelector(
+    selectGlobal,
+    state =>
+      state.get('selectedMun')
+        ? Object.keys(state.get('selectedMun')).filter(
+            item =>
+              item !== 'name' &&
+              (Object.keys(state.get('selectedMun')[item].income).length ||
+                Object.keys(state.get('selectedMun')[item].outcome).length),
+          )
+        : [],
+  );
 
+// const makeSelectBudgets = () =>
+//   createSelector(
+//     selectGlobal,
+//     state =>
+//       state.get('selectedMun')
+//         ? Object.keys(state.get('selectedMun')).filter(
+//             item =>
+//               item !== 'name' &&
+//               (Object.keys(state.get('selectedMun')[item].income).length ||
+//                 Object.keys(state.get('selectedMun')[item].outcome).length),
+//           )
+//         : [],
+//   );
 const makeSelectLocation = () =>
   createSelector(selectRouter, routerState =>
     routerState.get('location').toJS(),
   );
-export { makeSelectLocation, makeSelectBuget, makeSelectMetadata };
+
+export {
+  makeSelectLocation,
+  makeSelectBudgetYears,
+  makeSelectBuget,
+  makeSelectMetadata,
+  makeSelectBudgets,
+};

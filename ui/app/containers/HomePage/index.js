@@ -17,20 +17,29 @@ import {
 import injectSaga from '../../utils/injectSaga';
 import { DAEMON } from '../../utils/constants';
 import saga from './saga';
-import { GET_MUNICIPALITIES, GET_MAIN_PAGE } from './constants';
+import {
+  GET_MUNICIPALITIES,
+  GET_MAIN_PAGE,
+  CHANGE_BUDGET_YEAR,
+} from './constants';
 import TunisiaMap from '../TunisaMap/TunisiaMap';
-import { makeSelectMetadata, makeSelectBuget } from '../App/selectors';
+import {
+  makeSelectMetadata,
+  makeSelectBuget,
+  makeSelectBudgetYears,
+  makeSelectBudgets,
+} from '../App/selectors';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
 const budgetColumns = [
   {
-    title: 'Name',
+    title: 'العنوان',
     dataIndex: 'name',
     key: 'name',
   },
   {
-    title: 'Total',
+    title: 'المجموع',
     dataIndex: 'total',
     key: 'total',
     width: '12%',
@@ -58,6 +67,7 @@ class HomePage extends React.Component {
       cities: this.props.metadata.municipalityData[value],
       secondCity: undefined, // this.props.metadata.municipalityData[value][0],
     });
+    this.props.changeBudgetYear(undefined);
   };
 
   handleMunChange = value => {
@@ -65,12 +75,27 @@ class HomePage extends React.Component {
       secondCity: value,
     });
     if (value) this.props.laodMunicipality(this.state.selected, value);
+    this.props.changeBudgetYear(undefined);
   };
 
   render() {
     // const { cities } = this.state;
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-    console.log(this.props.budgetOfYear);
+  console.log(this.props.budgets)
+    let balance;
+    try {
+      balance =
+        Number(this.props.budgetOfYear[1].total) -
+        Number(this.props.budgetOfYear[0].total);
+      if (balance < 0) {
+        balance = `- ${balance}`;
+      } else {
+        balance = `+ ${balance}`;
+      }
+    } catch (e) {
+      balance = '0';
+    }
+
     return (
       <Fragment>
         {!this.props.metadata &&
@@ -85,7 +110,29 @@ class HomePage extends React.Component {
             <Col span={19}>
               <Card>
                 <Tabs defaultActiveKey="1">
-                  <TabPane tab="Tab 1" key="1">
+                  <TabPane tab="Budget" key="1">
+                    <Row type="flex" gutter={16}>
+                      <Col />
+                      <Col>
+                        <Card title="الميزان">
+                          <h2>{balance}</h2>
+                        </Card>
+                      </Col>
+                      <Col span={6}>
+                        <Select
+                          className="big-select"
+                          style={{ width: 120 }}
+                          onChange={this.props.changeBudgetYear}
+                        >
+                          {this.props.budgetYears.map(year => (
+                            <Option key={year}>{year}</Option>
+                          ))}
+                        </Select>
+                        :السنة
+                      </Col>
+                    </Row>
+
+                    <Divider />
                     <Table
                       dataSource={this.props.budgetOfYear}
                       columns={budgetColumns}
@@ -155,12 +202,17 @@ function mapDispatchToProps(dispatch) {
     loadMainPage: () => {
       dispatch({ type: GET_MAIN_PAGE });
     },
+    changeBudgetYear: year => {
+      dispatch({ type: CHANGE_BUDGET_YEAR, payload: year });
+    },
   };
 }
 
 const mapStateToProps = createStructuredSelector({
   metadata: makeSelectMetadata(),
-  budgetOfYear: makeSelectBuget(2017),
+  budgetOfYear: makeSelectBuget(),
+  budgetYears: makeSelectBudgetYears(),
+  budgets: makeSelectBudgets(),
 });
 
 const withConnect = connect(
