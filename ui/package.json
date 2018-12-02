@@ -61,6 +61,7 @@
   "dependencies": {
     "@babel/polyfill": "7.0.0",
     "antd": "^3.10.9",
+    "axios": "^0.18.0",
     "chalk": "^2.4.1",
     "compression": "1.7.3",
     "connected-react-router": "4.5.0",
@@ -74,6 +75,7 @@
     "intl": "1.2.5",
     "invariant": "2.2.4",
     "ip": "1.1.5",
+    "keccak256": "^1.0.0",
     "loadable-components": "2.2.3",
     "lodash": "4.17.11",
     "minimist": "1.2.0",
