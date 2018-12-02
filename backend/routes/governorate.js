@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 
-const data = require(path.join(__dirname, '../../db/_sample-data'))
+// const data = require(path.join(__dirname, '../../db/_sample-data'))
 
 
 // GET municipality by governorate by name
@@ -24,9 +24,9 @@ router.get('/:g_name', function(req, res, next) {
 });
 
 // GET all governorates
-router.get('/', function(req, res, next) {
-  res.json(data);
-});
+// router.get('/', function(req, res, next) {
+//   res.json(data);
+// });
 
 
 function getMunicipalitiesByGovernorateByName(g_name, m_name) {
@@ -44,11 +44,13 @@ function getMunicipalitiesByGovernorate(g_name) {
 }
 
 function getGovernorateByName(g_name) {
-  for (let elt of data) {
-    if (elt.name === g_name) {
-      return elt
-    }
-  }
+  const data = require(path.join(__dirname, `../../db/budgets/${g_name}`))
+  // for (let elt of data) {
+  //   if (elt.name === g_name) {
+  //     return elt
+  //   }
+  // }
+  return data
 }
 
 
