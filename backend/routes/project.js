@@ -23,9 +23,8 @@ function getMunicipalitiesByGovernorateByName(g_name, m_name) {
 
 function getGovernorateByName(g_name) {
   const data = require(path.join(__dirname, `../../db/projects/${g_name}.json`))
-  console.log(data)
+  // console.log(data)
   return data;
 }
-
 
 module.exports = router;

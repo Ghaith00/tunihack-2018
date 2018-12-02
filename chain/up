@@ -1,6 +1,0 @@
-#!/bin/sh
-
-
-ganache-cli -p 8545 &> ganache.log &
-
-truffle migrate --network dev

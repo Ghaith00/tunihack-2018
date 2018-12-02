@@ -1,0 +1,8 @@
+#!/bin/sh
+
+
+# start chain
+ganache-cli -p 8545 &> ganache.log &
+
+# deploy contracts and sign data on the blockchain
+truffle networks --clean && truffle migrate --network dev

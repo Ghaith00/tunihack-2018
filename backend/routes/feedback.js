@@ -6,7 +6,7 @@ const Web3 = require('web3');
 const keccak256 = require('keccak256')
 
 
-
+// /feedback?cin=...&municipality=...&desc=...
 
 let web3;
 if (typeof web3 === 'undefined') {
@@ -16,12 +16,17 @@ if (typeof web3 === 'undefined') {
 }
 
 router.get('/', function(req, res, next) {
+
+    const cin = req.query.cin;
+    const municipality = req.query.municipality;
+    const desc = req.query.desc;
+
+    web3.eth.defaultAccount = web3.eth.accounts[0];
     const contract = loadContract(web3);
-    let key = keccak256(req.query.municipality).toString('hex').toString()
-    console.log("key: " + key);
-    const fileHash = contract.get(key);
-    console.log('filehash: ' + fileHash)
-    res.json({"response": req.query.hash === fileHash});
+    let key = keccak256(municipality).toString('hex').toString()
+    console.log(key)
+    contract.addFeedback(key, cin, desc);
+    res.json({"response": true})
 });
 
 function loadContract(web3) {
