@@ -34,6 +34,43 @@ import {
 
 const { Option } = Select;
 const { TabPane } = Tabs;
+const projectsColumns = [
+  {
+    title: 'المشروع',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: 'الوصف',
+    dataIndex: 'description',
+    key: 'description',
+    width: '12%',
+  },
+  {
+    title: 'النوع',
+    dataIndex: 'type',
+    key: 'type',
+    width: '12%',
+  },
+  {
+    title: 'المجال',
+    dataIndex: 'field',
+    key: 'field',
+    width: '12%',
+  },
+  {
+    title: 'التكلفة المبرمجة',
+    dataIndex: 'planned cost',
+    key: 'planned cost',
+    width: '12%',
+  },
+  {
+    title: 'التكلفة المبرمجة',
+    dataIndex: 'cost',
+    key: 'cost',
+    width: '12%',
+  },
+];
 const budgetColumns = [
   {
     title: 'العنوان',
@@ -83,7 +120,7 @@ class HomePage extends React.Component {
   render() {
     // const { cities } = this.state;
     const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
-    console.log(this.props.budgets);
+    console.log(this.props.projects);
     // let balance;
     // try {
     //   balance =
@@ -130,7 +167,7 @@ class HomePage extends React.Component {
               <Card>
                 <Tabs defaultActiveKey="1">
                   <TabPane tab="الميزانية" key="1">
-                    <h2 style={{ textAlign: 'center' }}>الميزانية</h2>
+                    <h2 style={{ textAlign: 'center' }}>المداخيل </h2>
                     <Chart forceFit height={400} data={data} scale={scale}>
                       <Tooltip />
                       <Axis />
@@ -161,13 +198,11 @@ class HomePage extends React.Component {
                     />
                   </TabPane>
                   <TabPane tab="المشاريع" key="2">
-                    <h2 style={{ textAlign: 'center' }}>
-                      جدول النفقات و المداخيل المفصل{' '}
-                    </h2>
+                    <h2 style={{ textAlign: 'center' }}>جدول مفصل </h2>
                     <Divider />
                     <Table
-                      dataSource={this.props.budgetOfYear}
-                      columns={budgetColumns}
+                      dataSource={this.props.projects }
+                      columns={projectsColumns}
                     />
                   </TabPane>
                   <TabPane tab="ممتلكات" key="3">

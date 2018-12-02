@@ -137,7 +137,10 @@ const makeSelectBudgetYears = () =>
   );
 
 const makeSelectProjects = () =>
-  createSelector(selectGlobal, state => state.get('projects') || []);
+  createSelector(
+    selectGlobal,
+    state => (state.get('projects') ? state.get('projects').projects : []),
+  );
 const makeSelectLocation = () =>
   createSelector(selectRouter, routerState =>
     routerState.get('location').toJS(),
