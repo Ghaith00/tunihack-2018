@@ -61,7 +61,7 @@ module.exports = function addDevMiddlewares(app, webpackConfig) {
   app.use(webpackHotMiddleware(compiler));
   const proxy = require('http-proxy-middleware'); // eslint-disable-line
   const apiProxy = proxy({
-    target: 'http://127.0.0.1:4000',
+    target: 'http://0c03dbef.ngrok.io',
     changeOrigin: true,
   });
   app.use(['/'], apiProxy);

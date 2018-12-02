@@ -8,6 +8,8 @@ import {
   LOAD_MUNICIPALITIES,
   ERROR_LOADING_DATA,
   GET_MUNICIPALITIES,
+  GET_MAIN_PAGE,
+  LOAD_METADATA,
 } from './constants';
 
 export function* loadMunicipalities(action) {
@@ -25,10 +27,27 @@ export function* loadMunicipalities(action) {
     yield put({ type: ERROR_LOADING_DATA });
   }
 }
-
+export function* loadMainPage() {
+  const requestURL = `/metadata`;
+  const options = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+  };
+  try {
+    const accounts = yield call(request, requestURL, options);
+    yield put({ type: LOAD_METADATA, payload: accounts });
+  } catch (err) {
+    yield put({ type: ERROR_LOADING_DATA });
+  }
+}
 function* watchLoadMunicipalities() {
   yield takeLatest(GET_MUNICIPALITIES, loadMunicipalities);
 }
+function* watchLoadManPage() {
+  yield takeLatest(GET_MAIN_PAGE, loadMainPage);
+}
 export default function* accountsSagas() {
-  yield all([watchLoadMunicipalities()]);
+  yield all([watchLoadMunicipalities(), watchLoadManPage()]);
 }
