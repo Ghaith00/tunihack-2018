@@ -23,6 +23,7 @@ This plateform, makes use of the data provided by opengov sources to extract and
 * `npm start`
 
 ### API routes
+
   GET '/'                         => just for testing if api is accessible
   GET '/metadata'                 => get municipalities of each governorate
   GET '/governorates              => all governorates
